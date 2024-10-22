@@ -1,0 +1,528 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "这个单元格给助教，请忽略!\n",
+    "\n",
+    "### Score:\n",
+    "\n",
+    "### Comment: \n",
+    "\n",
+    "请实现每个 function 内容，确保最终提交的notebook是可以运行的。\n",
+    "\n",
+    "每一题除了必须要报告的 输出/图表，可以添加解释（中文即可）。此外可以自定义其他 function / 变量，自由添加单元格，但请确保题目中给出的 function （如第一题的 Print_values）可以正常调用。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Collaboration:**  \n",
+    "\n",
+    "Collaboration on solving the assignment is allowed, after you have thought about the problem sets on your own. It is also OK to get clarification (but not solutions) from online resources, again after you have thought about the problem sets on your own. \n",
+    "\n",
+    "There are two requirements for collaboration: \n",
+    "\n",
+    "* Cite your collaborators **fully and completely** (*e.g.*, \"XXX explained to me what is asked in problem set 3\"). Or cite online resources (*e.g.*, \"I got inspired by reading XXX\") that helped you.\n",
+    "\n",
+    "* Write your scripts and report **independently** - the scripts and report must come from you only."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 1. Flowchart \n",
+    "\n",
+    "Write a function `Print_values` with arguments `a`, `b`, and `c` to reflect the following flowchart. Here the purple parallelogram operator on a list `[x, y, z]` is to compute and print `x+y-10z`. Try your output with some random `a`, `b`, and `c` values. Report your output when `a = 10, b = 5, c = 1`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# def Print_values(a, b, c):\n",
+   "#   # 定义一个包含参数a, b, c的函数Print_values
+    def Print_values(a, b, c):
+        # 按从小到大的顺序比较a, b, c的大小并按降序输出a,b,c
+        if a > b and b > c:
+            x = a
+            y = b
+            z = c
+            print(x, y, z)
+        elif a > c and c > b:
+            x = a
+            y = c
+            z = b
+            print(x, y, z)
+        elif b > a and a > c:
+            x = b
+            y = a
+            z = c
+        elif b > c and c > a:
+            x = b
+            y = c
+            z = a
+        elif c > a and a > b:
+            x = c
+            y = a
+            z = b
+            print(x, y, z)
+        else:
+            x = c
+            y = b
+            z = a
+            print(x, y, z)
+        
+        # 计算并输出x+y-10z
+        print(x + y - 10*z)
+        
+        # 使用a=10, b=5, c=1测试函数
+    Print_values(10, 5, 1)
+    ”
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Report your output when `a = 10, b = 5, c = 1`: [ 5 ]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "[ 先定义一个包含参数a, b, c的函数Print_values，再一一比较大小并按降序输出，将a,b,c由大到小分别赋值给x,y,z ，计算并输出x+y-10z]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 2. Continuous ceiling function\n",
+    "\n",
+    "Given a list with `N` positive integers. For every element `x` of the list, find the value of continuous ceiling function defined as `F(x) = F(ceil(x/3)) + 2x`, where `F(1) = 1`. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import math\n",
+    "\n",
+    "# def calculate_F_values(N_list):\n",
+    "" #   def F(x):
+        if x == 1:
+            return 1
+        else:
+            return F((x+2)//3) + 2*x
+
+    # 测试例子
+    numbers = [1, 3, 5, 10, 15]
+    for num in numbers:
+        result = F(num)
+        print(f"F({num}) = {result}")
+    ""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "[ 先定义函数，先设置x=1的返回值，再使用函数计算 ]" 
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 3. Dice rolling\n",
+    "\n",
+    "**3.1** Given `10` dice each with `6` faces, numbered from `1` to `6`. Write a function `Find_number_of_ways` to find the number of ways to get sum `x`, defined as the sum of values on each face when all the dice are thrown."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# def find_number_of_ways(sum_x):\n",
+     ""# # 定义函数Find_number_of_ways，接受参数x和n（n个骰子）
+    def Find_number_of_ways(x, n, memo):
+        # 如果只有一个骰子，且x的范围是1到6之间，那么只有一种方式
+        if n == 1:
+            if 1 <= x <= 6:
+                return 1
+            else:
+                return 0
+        # 如果之前已经计算过，直接返回之前的计算结果
+        if (x, n) in memo:
+            return memo[(x, n)]
+        
+        # 初始化计数值
+        ways = 0
+        # 遍历骰子的每个面
+        for i in range(1, 7):
+            # 递归调用计算剩余骰子的所有可能情况
+            ways += Find_number_of_ways(x - i, n - 1, memo)
+        
+        # 存储计算结果到memo中
+        memo[(x, n)] = ways
+        return ways
+
+    # 测试例子
+    x = 15
+    n = 10
+    memo = {}
+    result = Find_number_of_ways(x, n, memo)
+    print(f"The number of ways to get sum {x} with {n} dice is: {result}") 
+   "      
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**3.2** Count the number of ways for any `x` from `10` to `60`, assign the number of ways to a list called `Number_of_ways`, so which `x` yields the maximum of `Number_of_ways`?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+   "#  # 定义函数Find_number_of_ways，接受参数x和n（n个骰子）
+    ""#  def Find_number_of_ways(x, n, memo):
+        # 如果只有一个骰子，且x的范围是1到6之间，那么只有一种方式
+        if n == 1:
+            if 1 <= x <= 6:
+                return 1
+            else:
+                return 0
+        # 如果之前已经计算过，直接返回之前的计算结果
+        if (x, n) in memo:
+            return memo[(x, n)]
+        
+        # 初始化计数值
+        ways = 0
+        # 遍历骰子的每个面
+        for i in range(1, 7):
+            # 递归调用计算剩余骰子的所有可能情况
+            ways += Find_number_of_ways(x - i, n - 1, memo)
+        
+        # 存储计算结果到memo中
+        memo[(x, n)] = ways
+        return ways
+
+    # 初始化存储结果的列表
+    Number_of_ways = []
+
+    # 遍历x的范围从10到60
+    for x in range(10, 61):
+        n = 10  # 10个骰子
+        memo = {}  # 初始化memo
+        result = Find_number_of_ways(x, n, memo)  # 计算x和n的方法数量
+        Number_of_ways.append(result)  # 将结果加入列表中
+
+    # 找到最大值以及对应的x值
+    max_ways = max(Number_of_ways)
+    max_x = Number_of_ways.index(max_ways) + 10  # 加上起始的10
+
+    print(f"The maximum number of ways {max_ways} is achieved at x = {max_x}")
+   "
+    "\n",
+    "# print(f\"The sum that yields the maximum number of ways is {max_sum} with {max_ways} ways.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "So which `x` yields the maximum of `Number_of_ways`? [ The maximum number of ways 4395456 is achieved at x = 35 ]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "[ 定义一个Find_number_of_ways函数，该函数接受两个参数x和n，分别表示期望的和的值以及骰子的数量。函数使用递归的方式计算掷骰子得到和为x的方法数量，并将结果存储在memo中以避免重复计算。在测试例子中，调用了Find_number_of_ways函数，并输出了最终的计算结果。x的范围从10到60，对每个x值调用Find_number_of_ways函数计算骰子掷出和为x的方法数量，并将结果存储在名为Number_of_ways的列表中。然后找到Number_of_ways列表中的最大值以及对应的x值，并输出结果 ]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 4. Dynamic programming\n",
+    "\n",
+    "**4.1 [5 points]** Write a function `Random_integer` to fill an array of `N` elements by randomly selecting integers from `0` to `10`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import random\n",
+    "\n",
+    "# 4.1\n",
+    "# def Random_integer(N):\n",
+    "# import random
+
+    def Random_integer(N):
+        return [random.randint(0, 10) for _ in range(N)]
+
+    # 测试例子
+    N = 10
+    random_array = Random_integer(N)
+    print(random_array)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**4.2 [15 points]** Write a function `Sum_averages` to compute the sum of the average of all subsets of the array. For example, given an array of `[1, 2, 3]`, you `Sum_averages` function should compute the sum of: average of `[1]`, average of `[2]`, average of `[3]`,  average of `[1, 2]`, average of `[1, 3]`, average of `[2, 3]`, and average of `[1, 2, 3]`.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 4.2\n",
+    "# def Sum_averages(array): \n",
+    "# from itertools import combinations
+
+    def Sum_averages(arr):
+        n = len(arr)
+        total_sum = 0
+
+        # 遍历所有的子集
+        for r in range(1, n+1):
+            subsets = combinations(arr, r)
+            for subset in subsets:
+                subset_sum = sum(subset)
+                subset_avg = subset_sum / len(subset)
+                total_sum += subset_avg
+
+        return total_sum
+
+    # 测试例子
+    arr = [1, 2, 3]
+    result = Sum_averages(arr)
+    print(result)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**4.3 [5 points]** Call `Sum_averages` with `N` increasing from `1` to `100`, assign the output to a list called `Total_sum_averages`. Plot `Total_sum_averages`, describe what you see.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 4.3\n",
+    "import matplotlib.pyplot as plt\n",
+    "# import matplotlib.pyplot as plt
+
+    Total_sum_averages = []
+
+    for N in range(1, 101):
+        arr = list(range(1, N+1))
+        result = Sum_averages(arr)
+        Total_sum_averages.append(result)
+
+    plt.plot(range(1, 101), Total_sum_averages)
+    plt.xlabel('N')
+    plt.ylabel('Total Sum of Averages')
+    plt.title('Total Sum of Averages vs N')
+    plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Describe what you see. [ [5, 5, 5, 10, 10, 0, 1, 8, 10, 9]
+    14.0 ]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "[ 定义一个Random_integer函数，该函数接受一个参数N，表示数组的长度。函数使用random.randint(0, 10)来生成一个0到10之间的随机整数，并使用列表推导式生成包含N个随机整数的数组。在测试例子中调用了Random_integer函数，并打印出了生成的随机数组。定义一个Sum_averages函数，该函数接受一个数组arr作为输入。函数使用combinations函数从数组中生成所有可能的子集，并遍历这些子集。对于每个子集，计算其和subset_sum和平均值subset_avg，并将平均值加到total_sum中。最后，函数返回total_sum作为结果。
+
+在测试例子中调用了Sum_averages函数，对数组[1, 2, 3]进行计算，并打印出了结果。通过循环调用Sum_averages函数，并将N从1递增到100。使用range函数生成从1到N的连续整数，并将其转换为数组arr。然后计算Sum_averages函数的结果，并将其添加到Total_sum_averages列表中。最后，使用matplotlib库绘制Total_sum_averages与N的关系图。x轴表示N的值，y轴表示Total_sum_averages的值。为图表添加了坐标轴标签和标题，并使用plt.show()显示图表。 ]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 5. Path counting\n",
+    "\n",
+    "**5.1 [5 points]** Create a matrix with `N` rows and `M` columns, fill the right-bottom corner and top-left corner cells with `1`, and randomly fill the rest of matrix with integer `0` or `1`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# import numpy as np
+
+    def create_matrix(N, M):
+        matrix = np.random.randint(0, 2, size=(N, M))  # 随机填充0或1
+        matrix[0, 0] = 1  # 填充左上角
+        matrix[N-1, M-1] = 1  # 填充右下角
+        return matrix
+
+    # 创建一个3行4列的示例矩阵
+    N = 3
+    M = 4
+    matrix = create_matrix(N, M)
+    print(matrix)
+"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**5.2 [25 points]** Consider a cell marked with `0` as a blockage or dead-end, and a cell marked with `1` is good to go. Write a function `Count_path` to count the total number of paths to reach the right-bottom corner cell from the top-left corner cell. \n",
+    "\n",
+    "**Notice:** for a given cell, you are **only allowed** to move either rightward or downward."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# def Count_path(matrix):\n",
+    "    # def Count_path(matrix):
+        rows, cols = len(matrix), len(matrix[0])
+        
+        if matrix[0][0] == 0 or matrix[rows-1][cols-1] == 0:  # 如果起始点或终点是0，则无法到达
+            return 0
+        
+        count_matrix = [[0] * cols for _ in range(rows)]  # 创建一个全0矩阵来记录路径数
+        count_matrix[0][0] = 1  # 起始点路径数为1
+
+        # 计算每个格子的路径数
+        for i in range(rows):
+            for j in range(cols):
+                if matrix[i][j] == 1:  # 如果当前格子可通行
+                    if i > 0:  # 更新上方格子的路径数
+                        count_matrix[i][j] += count_matrix[i-1][j]
+                    if j > 0:  # 更新左方格子的路径数
+                        count_matrix[i][j] += count_matrix[i][j-1]
+
+        return count_matrix[rows-1][cols-1]  # 返回右下角格子的路径数"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**5.3 [5 points]** Let `N = 10, M = 8`, run `Count_path` for `1000` times, each time the matrix (except the right-bottom corner and top-left corner cells, which remain being `1`) is re-filled with integer `0` or `1` randomly, report the mean of total number of paths from the `1000` runs."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# import numpy as np
+
+    def Count_path(matrix):
+        rows, cols = len(matrix), len(matrix[0])
+        
+        if matrix[0][0] == 0 or matrix[rows-1][cols-1] == 0:  # 如果起始点或终点是0，则无法到达
+            return 0
+        
+        count_matrix = [[0] * cols for _ in range(rows)]  # 创建一个全0矩阵来记录路径数
+        count_matrix[0][0] = 1  # 起始点路径数为1
+
+        # 计算每个格子的路径数
+        for i in range(rows):
+            for j in range(cols):
+                if matrix[i][j] == 1:  # 如果当前格子可通行
+                    if i > 0:  # 更新上方格子的路径数
+                        count_matrix[i][j] += count_matrix[i-1][j]
+                    if j > 0:  # 更新左方格子的路径数
+                        count_matrix[i][j] += count_matrix[i][j-1]
+
+        return count_matrix[rows-1][cols-1]  # 返回右下角格子的路径数
+
+    # 生成1000次随机矩阵并计算路径数
+    N, M = 10, 8
+    path_counts = []
+    for _ in range(1000):
+        matrix = np.random.choice([0, 1], size=(N, M))
+        matrix[0][0] = 1  # 左上角格子设为1
+        matrix[N-1][M-1] = 1  # 右下角格子设为1
+        path_counts.append(Count_path(matrix))
+
+    # 计算平均路径数
+    mean_path_count = np.mean(path_counts)
+    print(mean_path_count)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Report the mean of total number of paths from the `1000` runs. [Your answer]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "[ 使用numpy库创建一个名为create_matrix的函数。该函数接受两个参数N和M，分别表示矩阵的行数和列数。使用numpy的random.randint函数来随机填充矩阵的元素为0或1。然后将左上角和右下角的元素分别设置为1。定义一个名为Count_path的函数，该函数接受一个二维矩阵作为输入。首先检查左上角和右下角的格子是否为0，如果是，则无法到达右下角，直接返回0。然后创建一个与输入矩阵相同大小的全0矩阵count_matrix来记录路径数，将起始点的路径数设为1。接下来使用两个嵌套的循环遍历矩阵的每个格子。对于每个可通行的格子，根据其上方和左方格子的路径数更新当前格子的路径数。最后返回右下角格子的路径数作为结果。 ]"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "base",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
